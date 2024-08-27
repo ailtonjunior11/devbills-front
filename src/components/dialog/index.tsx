@@ -1,12 +1,7 @@
 /* eslint-disable prettier/prettier */
-import {
-  Content,
-  Overlay,
-  Portal,
-  Root,
-  Trigger,
-} from '@radix-ui/react-dialog';
 import { ReactNode } from 'react';
+
+import { Content, Overlay, Portal, Root, Trigger } from './styles';
 
 type DialogProps = {
   children: ReactNode;

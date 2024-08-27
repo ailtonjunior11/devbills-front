@@ -6,7 +6,10 @@ import { theme } from '../../styles/theme';
 
 export const Root = styled(Dialog.Root)``;
 export const Portal = styled(Dialog.Portal)``;
-export const Trigger = styled(Dialog.Trigger)``;
+export const Trigger = styled(Dialog.Trigger)`
+  border: 0;
+  background-color: transparent;
+`;
 
 export const Overlay = styled(Dialog.Overlay)`
   background-color: rgba(0, 0, 0, 0.8);
