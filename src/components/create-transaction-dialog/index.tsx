@@ -1,7 +1,13 @@
 /* eslint-disable prettier/prettier */
+import { zodResolver } from '@hookform/resolvers/zod';
 import { InputMask } from '@react-input/mask';
-import { useCallback, useState } from 'react';
+import dayjs from 'dayjs';
+import { useCallback, useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
 
+import { useFetchAPI } from '../../hooks/useFetchAPI';
+import { createTransactionSchema } from '../../validators/schemas';
+import { CreateTransactionData } from '../../validators/types';
 import { Button } from '../button';
 import { Dialog } from '../dialog';
 import { Input } from '../input';
@@ -10,17 +16,39 @@ import {
   Container,
   Content,
   CurrencyInput,
+  ErrorMessage,
   InputGroup,
   RadioForm,
   RadioGroup,
 } from './styles';
 
 export function CreateTransactionDialog() {
+  const { categories, fetchCategories } = useFetchAPI();
   const [open, setOpen] = useState(false);
+  const {
+    register,
+    reset,
+    formState: { errors },
+    handleSubmit,
+  } = useForm<CreateTransactionData>({
+    defaultValues: {
+      categoryId: 'null',
+      title: '',
+      amount: '',
+      date: dayjs('2024-01-01').format('DD/MM/YYYY'),
+      type: 'income',
+    },
+    resolver: zodResolver(createTransactionSchema),
+  });
+
+  useEffect(() => {
+    fetchCategories();
+  }, [fetchCategories]);
 
   const handleClose = useCallback(() => {
+    reset();
     setOpen(false);
-  }, []);
+  }, [reset]);
 
   const onSubmit = useCallback(() => {
     handleClose();
@@ -38,22 +66,40 @@ export function CreateTransactionDialog() {
           subtitle="Crie uma nova transação para seu controle financeiro"
         />
 
-        <form>
+        <form onSubmit={handleSubmit(onSubmit)}>
           <Content>
             <InputGroup>
               <label>Categoria</label>
-              <select>
+              <select {...register('categoryId')}>
                 <option value="null">Selecione uma categoria...</option>
+                {categories?.length &&
+                  categories.map((item) => (
+                    <option key={item._id} value={item._id}>
+                      {item.title}
+                    </option>
+                  ))}
               </select>
+              {errors.categoryId && (
+                <ErrorMessage>{errors.categoryId.message}</ErrorMessage>
+              )}
             </InputGroup>
-            <Input label="Nome" placeholder="Nome da transação..." />
+            <Input
+              label="Nome"
+              placeholder="Nome da transação..."
+              {...register('title')}
+              error={errors.title?.message}
+            />
             <InputGroup>
               <label>Valor</label>
               <CurrencyInput
                 placeholder="R$ 0,00"
                 format="currency"
                 currency="BRL"
+                {...register('amount')}
               />
+              {errors.amount && (
+                <ErrorMessage>{errors.amount.message}</ErrorMessage>
+              )}
             </InputGroup>
 
             <InputMask
@@ -63,17 +109,32 @@ export function CreateTransactionDialog() {
               label="Data"
               variant="black"
               placeholder="dd/mm/aaaa"
+              error={errors.date?.message}
+              {...register('date')}
             />
 
             <RadioForm>
               <RadioGroup>
-                <input type="radio" id="income" value="income" name="type" />
+                <input
+                  type="radio"
+                  id="income"
+                  value="income"
+                  {...register('type')}
+                />
                 <label htmlFor="income">Receita</label>
               </RadioGroup>
               <RadioGroup>
-                <input type="radio" id="expense" value="expense" name="type" />
+                <input
+                  type="radio"
+                  id="expense"
+                  value="expense"
+                  {...register('type')}
+                />
                 <label htmlFor="expense">Gastos</label>
               </RadioGroup>
+              {errors.type && (
+                <ErrorMessage>{errors.type.message}</ErrorMessage>
+              )}
             </RadioForm>
           </Content>
 
@@ -81,9 +142,7 @@ export function CreateTransactionDialog() {
             <Button onClick={handleClose} variant="outline" type="button">
               Cancelar
             </Button>
-            <Button onClick={onSubmit} type="button">
-              Cadastrar
-            </Button>
+            <Button type="submit">Cadastrar</Button>
           </footer>
         </form>
       </Container>

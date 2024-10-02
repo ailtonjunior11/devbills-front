@@ -1,6 +1,12 @@
 /* eslint-disable prettier/prettier */
+import { zodResolver } from '@hookform/resolvers/zod';
 import { useCallback, useState } from 'react';
+import { useForm } from 'react-hook-form';
 
+import { useFetchAPI } from '../../hooks/useFetchAPI';
+import { theme } from '../../styles/theme';
+import { createCategorySchema } from '../../validators/schemas';
+import { CreateCategoryData } from '../../validators/types';
 import { Button } from '../button';
 import { Dialog } from '../dialog';
 import { Input } from '../input';
@@ -8,15 +14,28 @@ import { Title } from '../title';
 import { Container } from './styles';
 
 export function CreateCategoryDialog() {
+  const { createCategory, fetchCategories } = useFetchAPI();
   const [open, setOpen] = useState(false);
+  const { register, handleSubmit, formState } = useForm<CreateCategoryData>({
+    defaultValues: {
+      title: '',
+      color: theme.colors.primary,
+    },
+    resolver: zodResolver(createCategorySchema),
+  });
 
   const handleClose = useCallback(() => {
     setOpen(false);
   }, []);
 
-  const onSubmit = useCallback(() => {
-    handleClose();
-  }, [handleClose]);
+  const onSubmit = useCallback(
+    async (data: CreateCategoryData) => {
+      await createCategory(data);
+      handleClose();
+      await fetchCategories();
+    },
+    [handleClose, createCategory, fetchCategories],
+  );
 
   return (
     <Dialog
