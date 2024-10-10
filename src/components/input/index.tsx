@@ -6,16 +6,18 @@ import { Container } from './styles';
 type InputProps = ComponentProps<'input'> & {
   label?: string;
   variant?: 'black' | 'dark';
+  error?: string;
 };
 
 export const Input = forwardRef<HTMLInputElement, InputProps>(function (
-  { label, variant = 'black', ...props },
+  { label, error, variant = 'black', ...props },
   ref,
 ) {
   return (
     <Container $variant={variant}>
       {label && <label>{label}</label>}
       <input ref={ref} {...props} />
+      {error && <span>{error}</span>}
     </Container>
   );
 });

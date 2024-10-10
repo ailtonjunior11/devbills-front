@@ -37,5 +37,12 @@ export const Container = styled.div<ContainerProps>`
     &::placeholder {
       color: ${theme.colors.neutral};
     }
+
+    span {
+      margin-top: 0.125rem;
+      font-size: 0.625rem;
+      line-height: 80%;
+      color: ${theme.colors.error};
+    }
   }
 `;

@@ -109,8 +109,8 @@ export function CreateTransactionDialog() {
               label="Data"
               variant="black"
               placeholder="dd/mm/aaaa"
-              error={errors.date?.message}
               {...register('date')}
+              error={errors.date?.message}
             />
 
             <RadioForm>
