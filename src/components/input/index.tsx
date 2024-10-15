@@ -10,7 +10,7 @@ type InputProps = ComponentProps<'input'> & {
 };
 
 export const Input = forwardRef<HTMLInputElement, InputProps>(function (
-  { label, error, variant = 'black', ...props },
+  { label, variant = 'black', error, ...props },
   ref,
 ) {
   return (
