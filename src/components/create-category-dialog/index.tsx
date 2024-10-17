@@ -16,7 +16,7 @@ import { Container } from './styles';
 export function CreateCategoryDialog() {
   const { createCategory, fetchCategories } = useFetchAPI();
   const [open, setOpen] = useState(false);
-  const { register, handleSubmit, formState } = useForm<CreateCategoryData>({
+  useForm<CreateCategoryData>({
     defaultValues: {
       title: '',
       color: theme.colors.primary,
