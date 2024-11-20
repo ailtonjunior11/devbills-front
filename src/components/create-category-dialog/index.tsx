@@ -28,7 +28,7 @@ export function CreateCategoryDialog() {
     setOpen(false);
   }, []);
 
-  const onSubmit = useCallback(
+  const handleButtonClick = useCallback(
     async (data: CreateCategoryData) => {
       await createCategory(data);
       handleClose();
@@ -58,9 +58,7 @@ export function CreateCategoryDialog() {
             <Button onClick={handleClose} variant="outline" type="button">
               Cancelar
             </Button>
-            <Button onClick={onSubmit} type="button">
-              Cadastrar
-            </Button>
+            <Button onClick={handleButtonClick}>Cadastrar</Button>
           </footer>
         </form>
       </Container>
