@@ -1,4 +1,6 @@
 /* eslint-disable prettier/prettier */
+import { Button } from '@/components/ui/button';
+import { Dialog } from '@/components/ui/dialog';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useCallback, useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -13,35 +15,41 @@ import { Input } from '../input';
 import { Title } from '../title';
 import { Container } from './styles';
 
+interface CreateCategoryData {
+  title: string;
+}
+
 export function CreateCategoryDialog() {
-  const { createCategory, fetchCategories } = useFetchAPI();
-  const [open, setOpen] = useState(false);
-  useForm<CreateCategoryData>({
-    defaultValues: {
-      title: '',
-      color: theme.colors.primary,
-    },
-    resolver: zodResolver(createCategorySchema),
-  });
+  const handleButtonClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    const { createCategory, fetchCategories } = useFetchAPI();
+    const [open, setOpen] = useState(false);
+    useForm<CreateCategoryData>({
+      defaultValues: {
+        title: '',
+        color: theme.colors.primary,
+      },
+      resolver: zodResolver(createCategorySchema),
+    });
 
-  const handleClose = useCallback(() => {
-    setOpen(false);
-  }, []);
+    const handleClose = useCallback(() => {
+      setOpen(false);
+    }, []);
 
-  const handleButtonClick = useCallback(
-    async (data: CreateCategoryData) => {
-      await createCategory(data);
-      handleClose();
-      await fetchCategories();
-    },
-    [handleClose, createCategory, fetchCategories],
-  );
+    const handleButtonClick = useCallback(
+      async (data: CreateCategoryData) => {
+        await createCategory(data);
+        handleClose();
+        await fetchCategories();
+      },
+      [handleClose, createCategory, fetchCategories],
+    );
+  };
 
   return (
     <Dialog
-      open={open}
-      onOpenChange={setOpen}
-      trigger={<Button>Nova categoria</Button>}
+      // open={open}
+      // onOpenChange={setOpen}
+      trigger={<Button onClick={handleButtonClick}>Nova categoria</Button>}
     >
       <Container>
         <Title
