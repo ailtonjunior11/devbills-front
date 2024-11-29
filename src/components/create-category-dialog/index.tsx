@@ -17,10 +17,6 @@ import { Input } from '../input';
 import { Title } from '../title';
 import { Container } from './styles';
 
-// interface CreateCategoryData {
-//   title: string;
-// }
-
 export function CreateCategoryDialog() {
   const { createCategory, fetchCategories } = useFetchAPI();
   const [open, setOpen] = useState(false);
@@ -66,7 +62,7 @@ export function CreateCategoryDialog() {
             <Button onClick={handleClose} variant="outline" type="button">
               Cancelar
             </Button>
-            <Button onClick={handleButtonClick}>Cadastrar</Button>
+            <button onClick={handleButtonClick}>Cadastrar</button>
           </footer>
         </form>
       </Container>
