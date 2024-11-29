@@ -1,6 +1,8 @@
 /* eslint-disable prettier/prettier */
+
 // import { Button } from '@/components/ui/button';
 // import { Dialog } from '@/components/ui/dialog';
+// import { zodResolver } from '@hookform/resolvers/zodResolver';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useCallback, useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -20,7 +22,6 @@ import { Container } from './styles';
 // }
 
 export function CreateCategoryDialog() {
-  // const handleButtonClick = (event: React.MouseEvent<HTMLButtonElement>) => {
   const { createCategory, fetchCategories } = useFetchAPI();
   const [open, setOpen] = useState(false);
   useForm<CreateCategoryData>({
@@ -48,7 +49,7 @@ export function CreateCategoryDialog() {
     <Dialog
       open={open}
       onOpenChange={setOpen}
-      trigger={<Button onClick={handleButtonClick}>Nova categoria</Button>}
+      trigger={<Button>Nova categoria</Button>}
     >
       <Container>
         <Title
