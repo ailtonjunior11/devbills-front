@@ -62,7 +62,7 @@ export function CreateCategoryDialog() {
             <Button onClick={handleClose} variant="outline" type="button">
               Cancelar
             </Button>
-            <button onClick={handleButtonClick}>Cadastrar</button>
+            <Button onClick={handleButtonClick}>Cadastrar</Button>
           </footer>
         </form>
       </Container>

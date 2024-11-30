@@ -5,6 +5,8 @@ import {
   Category,
   CreateCategory,
   CreateTransaction,
+  Dashboard,
+  DashboardFilters,
   Transaction,
   TransactionsFilter,
 } from './api-types';
@@ -13,6 +15,23 @@ export class APIService {
   private static client = axios.create({
     baseURL: import.meta.env.VITE_API_URL,
   });
+
+  static async getDashboard({
+    beginDate,
+    endDate,
+  }: DashboardFilters): Promise<Dashboard> {
+    const { data } = await APIService.client.get<Dashboard>(
+      '/transactions/dashboard',
+      {
+        params: {
+          beginDate,
+          endDate,
+        },
+      },
+    );
+
+    return data;
+  }
 
   static async createTransaction(
     createTransactionData: CreateTransaction,

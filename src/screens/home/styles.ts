@@ -3,6 +3,10 @@ import { styled } from 'styled-components';
 
 import { theme } from './../../styles/theme';
 
+type CategoryBadgeProps = {
+  $color: string;
+};
+
 export const Header = styled.header`
   display: flex;
   align-items: center;
@@ -56,10 +60,10 @@ export const Balance = styled.div`
 export const ChartContainer = styled.div`
   display: flex;
   flex-direction: column;
-  padding: 1rem;
+  padding: 1.05rem;
   background-color: ${theme.colors.dark};
   border-radius: 0.25rem;
-  gap: 0.75rem;
+  gap: 0.55rem;
 
   header {
     display: flex;
@@ -105,4 +109,25 @@ export const TransactionGroup = styled.div`
   display: flex;
   flex-direction: column;
   gap: 0 0.75rem;
+`;
+
+export const CategoryBadge = styled.span<CategoryBadgeProps>`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.25rem;
+
+  font-size: 0.625rem;
+  font-weight: 400;
+  border: solid 1px ${(props) => props.$color};
+  color: ${(props) => props.$color};
+  padding: 0.25rem;
+  border-radius: 0.125rem;
+  cursor: pointer;
+
+  svg {
+    fill: ${theme.colors.error};
+    width: 0.875rem;
+    height: 0.875rem;
+  }
 `;
