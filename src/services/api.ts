@@ -7,6 +7,8 @@ import {
   CreateTransaction,
   Dashboard,
   DashboardFilters,
+  FinancialEvolution,
+  FinancialEvolutionFilters,
   Transaction,
   TransactionsFilter,
 } from './api-types';
@@ -78,6 +80,21 @@ export class APIService {
 
   static async getCategories(): Promise<Category[]> {
     const { data } = await APIService.client.get<Category[]>('/categories');
+
+    return data;
+  }
+
+  static async getFinancialEvolution({
+    year,
+  }: FinancialEvolutionFilters): Promise<FinancialEvolution[]> {
+    const { data } = await APIService.client.get<FinancialEvolution[]>(
+      '/transactions/financial-evoluction',
+      {
+        params: {
+          year,
+        },
+      },
+    );
 
     return data;
   }
