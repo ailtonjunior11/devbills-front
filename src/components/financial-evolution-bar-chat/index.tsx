@@ -4,49 +4,11 @@ import dayjs from 'dayjs';
 import ptBRLocale from 'dayjs/locale/pt-br';
 import { useMemo } from 'react';
 
+import { FinancialEvolution } from '../../services/api-types';
 import { theme } from '../../styles/theme';
 import { formatCurrency } from '../../utils/format-currency';
 
 dayjs.locale(ptBRLocale);
-
-const apiData = [
-  {
-    _id: {
-      year: 2024,
-      month: 1,
-    },
-    balance: 68900,
-    incomes: 76343,
-    expenses: 48399,
-  },
-  {
-    _id: {
-      year: 2024,
-      month: 2,
-    },
-    balance: 68900,
-    incomes: 76343,
-    expenses: 48399,
-  },
-  {
-    _id: {
-      year: 2024,
-      month: 3,
-    },
-    balance: 68900,
-    incomes: 76343,
-    expenses: 48399,
-  },
-  {
-    _id: {
-      year: 2024,
-      month: 4,
-    },
-    balance: 68900,
-    incomes: 76343,
-    expenses: 48399,
-  },
-];
 
 type ChatData = {
   month: string;
@@ -55,17 +17,31 @@ type ChatData = {
   Gastos: number;
 };
 
-export function FinancialEvolutionBarChart() {
-  const data = useMemo<ChatData[]>(() => {
-    const chartData: ChatData[] = apiData.map((item) => ({
-      month: dayjs(`${item._id.year}-${item._id.month}-1`).format('MMM'),
-      Saldo: item.balance,
-      Receitas: item.incomes,
-      Gastos: item.expenses,
-    }));
+type FinancialEvolutionBarChartProps = {
+  financialEvolution?: FinancialEvolution[];
+};
 
-    return chartData;
-  }, []);
+export function FinancialEvolutionBarChart({
+  financialEvolution,
+}: FinancialEvolutionBarChartProps) {
+  const data = useMemo<ChatData[]>(() => {
+    if (financialEvolution?.length) {
+      const chartData: ChatData[] = financialEvolution.map((item) => {
+        const [year, month] = item._id;
+
+        return {
+          month: dayjs(`${year}-${month}-01`).format('MMM'),
+          Saldo: item.balance,
+          Receitas: item.incomes,
+          Gastos: item.expenses,
+        };
+      });
+
+      return chartData;
+    }
+
+    return [];
+  }, [financialEvolution]);
 
   return (
     <ResponsiveBar

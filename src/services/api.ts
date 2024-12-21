@@ -88,7 +88,7 @@ export class APIService {
     year,
   }: FinancialEvolutionFilters): Promise<FinancialEvolution[]> {
     const { data } = await APIService.client.get<FinancialEvolution[]>(
-      '/transactions/financial-evoluction',
+      '/transactions/financial-evolution',
       {
         params: {
           year,
